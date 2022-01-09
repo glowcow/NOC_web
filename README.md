@@ -10,7 +10,7 @@ This project was created to get various information for NOC engineer.
 ## Technologies
 Project is created with:
 * PostgreSQL 13
-* PHP 7.3
+* PHP-FPM 7.4
 * CSS & Sass
 * JavaScript
     
