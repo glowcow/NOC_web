@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  nginx:
+    container_name: noc_nginx
+    image: nginx:latest
+    restart: unless-stopped
+    ports:
+      - "176.213.132.105:80:80"
+    volumes:
+        - ./nginx/:/etc/nginx/conf.d
+        - ./www:/var/www/html
+    depends_on:
+      - php-fpm
+  php-fpm:
+    container_name: noc_php
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./www:/var/www/html

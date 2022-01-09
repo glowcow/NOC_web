@@ -24,19 +24,19 @@
 							<!-- Content -->
 								<section>
 										<header>
-											<p>Подробная информация о BSA/MKU </p>
+											<p>Настроенные скриптом каналы на CTS</p>
 										</header>
 										<div class="table-wrapper">
 										<table class="alt">
-										<thead><tr><td>Номер</td><td>IP Base</td><td>IP VPRN 100</td><td>IP VPRN 140</td><td>IP r1.BS | AN</td><td>Расположение</td></tr></thead>
+										<thead><tr><td>ID включения</td><td>Дата</td><td>IP</td><td>VLAN</td><td>EoIP</td><td>Описание</td><td>Token</td></tr></thead>
 										<tbody>
 										<?php
-										$dbconn = pg_connect("host=localhost dbname=pw_rings user=auto_script password=wnqJEyWkLVWuZj4p")
+										$dbconn = pg_connect("host=176.213.132.105 dbname=pw_rings user=auto_script password=wnqJEyWkLVWuZj4p")
 											or die('Не удалось соединиться: ' . pg_last_error());
-										$query = 'SELECT * FROM bsa ORDER BY id ASC';
+										$query = 'SELECT * FROM cts_token OFFSET (SELECT CASE WHEN count(*)>300 THEN count(*)-300 END FROM cts_token)';
 										$result = pg_query($query) or die('Ошибка запроса: ' . pg_last_error());
 										while ($row = pg_fetch_assoc($result)) {
-											printf("<tr><td><b>%s</b></td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n", $row[bsa], $row[ip_base], $row[ip_vprn100], $row[ip_vprn140], $row[arp_r1_bs], $row[location]);
+											printf("<tr><td><b>%s</b></td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n", $row["id"], $row["date"], $row["ip"], $row["vlan"], $row["eoip"], $row["descr"], $row["token"]);
 										}
 										pg_free_result($result);
 										pg_close($dbconn);
@@ -76,7 +76,7 @@
 
 							<!-- Footer -->
 								<footer id="footer">
-									<p class="copyright">&copy; 2021. ЭР-Телеком Москва. </a></p>
+									<p class="copyright">&copy; 2022 | ЭР-Телеком, Москва. </a></p>
 								</footer>
 
 						</div>

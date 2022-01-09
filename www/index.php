@@ -59,7 +59,7 @@
 
 							<!-- Footer -->
 								<footer id="footer">
-									<p class="copyright">&copy; 2021. ЭР-Телеком Москва. </a></p>
+									<p class="copyright">&copy; 2022 | ЭР-Телеком, Москва. </a></p>
 								</footer>
 
 						</div>

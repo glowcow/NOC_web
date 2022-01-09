@@ -5,7 +5,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
-		</head>
+	</head>
 	<body class="is-preload">
 
 		<!-- Wrapper -->
@@ -24,8 +24,27 @@
 							<!-- Content -->
 								<section>
 										<header>
-											<p>Информация о PW полукольцах ГУТС </p>
+											<p>Информация о парах MKU</p>
 										</header>
+										<h4>Таблица пар MKU</h4>
+										<div class="table-wrapper">
+										<table class="alt">
+										<thead><tr><td>Номер пары MKU (SDP)</td><td>Основная MKU</td><td>Резервная MKU</td><td>Комментарий</td><td>Дата создания</td></tr></thead>
+										<tbody>
+										<?php
+										$dbconn = pg_connect("host=176.213.132.105 dbname=pw_rings user=auto_script password=wnqJEyWkLVWuZj4p")
+											or die('Не удалось соединиться: ' . pg_last_error());
+										$query = 'SELECT * FROM mku_ring ORDER BY mku_ring ASC';
+										$result = pg_query($query) or die('Ошибка запроса: ' . pg_last_error());
+										while ($row = pg_fetch_assoc($result)) {
+											printf("<tr><td><b>SDP-5%s</b></td><td>MKU-%s</td><td>MKU-%s</td><td>%s</td><td>%s</td></tr>\n", $row["mku_ring"],  $row["active_mku"], $row["backup_mku"], $row["comment"], $row["date"]);
+										}
+										pg_free_result($result);
+										pg_close($dbconn);
+										?>
+										</tbody>
+										</table>
+										</div>
 								</section>
 
 						</div>
@@ -58,7 +77,7 @@
 
 							<!-- Footer -->
 								<footer id="footer">
-									<p class="copyright">&copy; 2021. ЭР-Телеком Москва. </a></p>
+									<p class="copyright">&copy; 2022 | ЭР-Телеком, Москва. </a></p>
 								</footer>
 
 						</div>

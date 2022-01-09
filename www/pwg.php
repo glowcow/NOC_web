@@ -24,26 +24,8 @@
 							<!-- Content -->
 								<section>
 										<header>
-											<p>Настроенные скриптом каналы L2VPN</p>
+											<p>Информация о PW полукольцах ГУТС </p>
 										</header>
-										<div class="table-wrapper">
-										<table class="alt">
-										<thead><tr><td>ID включения</td><td>Дата</td><td>SDP</td><td>VPLS</td><td>VLAN</td><td>Скорость Мб/c</td></tr></thead>
-										<tbody>
-										<?php
-										$dbconn = pg_connect("host=localhost dbname=pw_rings user=auto_script password=wnqJEyWkLVWuZj4p")
-											or die('Не удалось соединиться: ' . pg_last_error());
-										$query = 'SELECT * FROM l2vpn_token OFFSET (SELECT CASE WHEN count(*)>300 THEN count(*)-300 END FROM l2vpn_token)';
-										$result = pg_query($query) or die('Ошибка запроса: ' . pg_last_error());
-										while ($row = pg_fetch_assoc($result)) {
-											printf("<tr><td><b>%s</b></td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n", $row[id], $row[date], $row[pw], $row[vpls], $row[vlan], $row[rate]);
-										}
-										pg_free_result($result);
-										pg_close($dbconn);
-										?>
-										</tbody>
-										</table>
-										</div>
 								</section>
 
 						</div>
@@ -76,7 +58,7 @@
 
 							<!-- Footer -->
 								<footer id="footer">
-									<p class="copyright">&copy; 2021. ЭР-Телеком Москва. </a></p>
+									<p class="copyright">&copy; 2022 | ЭР-Телеком, Москва. </a></p>
 								</footer>
 
 						</div>

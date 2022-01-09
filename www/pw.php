@@ -5,7 +5,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
-		</head>
+	</head>
 	<body class="is-preload">
 
 		<!-- Wrapper -->
@@ -38,12 +38,12 @@
 												<div>
 														<ul>
 														<?php
-														$dbconn = pg_connect("host=localhost dbname=pw_rings user=auto_script password=wnqJEyWkLVWuZj4p")
+														$dbconn = pg_connect("host=176.213.132.105 dbname=pw_rings user=auto_script password=wnqJEyWkLVWuZj4p")
 															or die('Не удалось соединиться: ' . pg_last_error());
 														$query = 'SELECT * FROM bsa_poller_stat ORDER BY id DESC LIMIT 1';
 														$result = pg_query($query) or die('Ошибка запроса: ' . pg_last_error());
 														while ($row = pg_fetch_assoc($result)) {
-															printf("<li>Всего / Доступных / Недоступных: %s / <font color=green>%s</font> / <font color=red>%s</font></li><li>Список недоступных BSA: %s </li><li>Дата последней проверки: %s </li>\n", $row[bsa_cnt], $row[up_cnt], $row[down_cnt], $row[bsa_down], $row[date]);
+															printf("<li>Всего / Доступных / Недоступных: %s / <font color=green>%s</font> / <font color=red>%s</font></li><li>Список недоступных BSA: %s </li><li>Дата последней проверки: %s </li>\n", $row["bsa_cnt"], $row["up_cnt"], $row["down_cnt"], $row["bsa_down"], $row["date"]);
 														}
 														pg_free_result($result);
 														pg_close($dbconn);
@@ -57,12 +57,12 @@
 										<thead><tr><td>Номер полукольца PW</td><td>Основная BSA / Тип</td><td>Резервная BSA / Тип</td><td>Комментарий</td></tr></thead>
 										<tbody>
 										<?php
-										$dbconn = pg_connect("host=localhost dbname=pw_rings user=auto_script password=wnqJEyWkLVWuZj4p")
+										$dbconn = pg_connect("host=176.213.132.105 dbname=pw_rings user=auto_script password=wnqJEyWkLVWuZj4p")
 											or die('Не удалось соединиться: ' . pg_last_error());
 										$query = 'SELECT * FROM rings ORDER BY pw_ring ASC';
 										$result = pg_query($query) or die('Ошибка запроса: ' . pg_last_error());
 										while ($row = pg_fetch_assoc($result)) {
-											printf("<tr><td><b>PW-%s</b></td><td><font color=%s>BSA-%s / %s</font></td><td><font color=%s>BSA-%s / %s</font></td><td>%s</td></tr>\n", $row[pw_ring], $row[act_state], $row[active_bsa], $row[active_type], $row[bkp_state], $row[backup_bsa], $row[backup_type], $row[comment]);
+											printf("<tr><td><b>PW-%s</b></td><td><font color=%s>BSA-%s / %s</font></td><td><font color=%s>BSA-%s / %s</font></td><td>%s</td></tr>\n", $row["pw_ring"], $row["act_state"], $row["active_bsa"], $row["active_type"], $row["bkp_state"], $row["backup_bsa"], $row["backup_type"], $row["comment"]);
 										}
 										pg_free_result($result);
 										pg_close($dbconn);
@@ -102,7 +102,7 @@
 
 							<!-- Footer -->
 								<footer id="footer">
-									<p class="copyright">&copy; 2021. ЭР-Телеком Москва. </a></p>
+									<p class="copyright">&copy; 2022 | ЭР-Телеком, Москва. </a></p>
 								</footer>
 
 						</div>
