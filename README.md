@@ -1,4 +1,4 @@
-# NOC info web
+# NOC info web app
 ## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)
