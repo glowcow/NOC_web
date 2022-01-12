@@ -15,4 +15,4 @@ Project is created with:
 * JavaScript
     
 ## Setup
-To run this project, copy source and run ```docker compose up -d``` in root folder.
+To run this project, copy source and run ```docker compose up -d``` in root folder or build docker image with Dockerfile.

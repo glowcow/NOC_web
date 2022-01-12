@@ -15,7 +15,7 @@ services:
     container_name: noc_php
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile_old
     restart: unless-stopped
     volumes:
       - ./www:/var/www/html
