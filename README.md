@@ -15,4 +15,4 @@ Project is created with:
 * JavaScript
     
 ## Setup
-To run this project, copy source and run ```docker compose up -d``` in root folder or build docker image with Dockerfile.
+To run this project, run ```docker pull glowcow/noc_web:2.1``` .
