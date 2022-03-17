@@ -15,4 +15,4 @@ Project is created with:
 * JavaScript
     
 ## Setup
-To run this project, run ```docker pull glowcow/noc_web:2.1``` .
+To run this project, run ```docker pull glowcow/noc_web:2.3``` .
