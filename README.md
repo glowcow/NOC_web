@@ -15,4 +15,4 @@ Project is created with:
 * JavaScript
     
 ## Setup
-To run this project, run ```docker pull glowcow/noc_web:2.3``` .
+To run this project, run ```sudo docker run -t -p 80:80 --name noc_web --restart unless-stopped glowcow/noc_web:latest``` .
