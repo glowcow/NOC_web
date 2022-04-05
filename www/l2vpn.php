@@ -31,7 +31,11 @@
 										<thead><tr><td>ID включения</td><td>Дата</td><td>SDP</td><td>VPLS</td><td>VLAN</td><td>Скорость Мб/c</td></tr></thead>
 										<tbody>
 										<?php
-										$dbconn = pg_connect("host=176.213.132.105 dbname=pw_rings user=auto_script password=wnqJEyWkLVWuZj4p")
+										$db_host = getenv('DB_HOST');
+										$db_name = getenv('DB_NAME');
+										$db_user = getenv('DB_USER');
+										$db_passw = getenv('DB_PASSW');
+										$dbconn = pg_connect("host=$db_host dbname=$db_name user=$db_user password=$db_passw")
 											or die('Не удалось соединиться: ' . pg_last_error());
 										$query = 'SELECT * FROM l2vpn_token OFFSET (SELECT CASE WHEN count(*)>300 THEN count(*)-300 END FROM l2vpn_token)';
 										$result = pg_query($query) or die('Ошибка запроса: ' . pg_last_error());

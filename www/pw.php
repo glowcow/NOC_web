@@ -38,7 +38,11 @@
 												<div>
 														<ul>
 														<?php
-														$dbconn = pg_connect("host=176.213.132.105 dbname=pw_rings user=auto_script password=wnqJEyWkLVWuZj4p")
+														$db_host = getenv('DB_HOST');
+														$db_name = getenv('DB_NAME');
+														$db_user = getenv('DB_USER');
+														$db_passw = getenv('DB_PASSW');
+														$dbconn = pg_connect("host=$db_host dbname=$db_name user=$db_user password=$db_passw")
 															or die('Не удалось соединиться: ' . pg_last_error());
 														$query = 'SELECT * FROM bsa_poller_stat ORDER BY id DESC LIMIT 1';
 														$result = pg_query($query) or die('Ошибка запроса: ' . pg_last_error());
@@ -57,7 +61,11 @@
 										<thead><tr><td>Номер полукольца PW</td><td>Основная BSA / Тип</td><td>Резервная BSA / Тип</td><td>Комментарий</td></tr></thead>
 										<tbody>
 										<?php
-										$dbconn = pg_connect("host=176.213.132.105 dbname=pw_rings user=auto_script password=wnqJEyWkLVWuZj4p")
+										$db_host = getenv('DB_HOST');
+										$db_name = getenv('DB_NAME');
+										$db_user = getenv('DB_USER');
+										$db_passw = getenv('DB_PASSW');
+										$dbconn = pg_connect("host=$db_host dbname=$db_name user=$db_user password=$db_passw")
 											or die('Не удалось соединиться: ' . pg_last_error());
 										$query = 'SELECT * FROM rings ORDER BY pw_ring ASC';
 										$result = pg_query($query) or die('Ошибка запроса: ' . pg_last_error());
