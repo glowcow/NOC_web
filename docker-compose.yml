@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   noc_web:
-    image: noc_web:latest
+    image: glowcow/noc_web:latest
     build: .
     container_name: noc_web
     restart: unless-stopped
