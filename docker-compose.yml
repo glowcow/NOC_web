@@ -7,9 +7,13 @@ services:
     container_name: noc_web
     restart: unless-stopped
     ports:
-      - ["80:80"]
+      - "80:80"
     environment:
       DB_NAME: ""
       DB_USER: ""
       DB_PASSW: ""
       DB_HOST: ""
+networks:
+  default:
+    name: noc_web
+    driver: bridge
