@@ -10,11 +10,15 @@ services:
 
 build:
   stage: build
+  tags:
+    - noc_msk
   script:
     - docker build -t $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID .
 
 push:
   stage: push
+  tags:
+    - noc_msk
   before_script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
   script:
