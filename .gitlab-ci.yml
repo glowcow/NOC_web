@@ -5,9 +5,6 @@ stages:
 variables:
   DOCKER_TLS_CERTDIR: ""
 
-services:
-  - docker:dind
-
 build:
   stage: build
   tags:
