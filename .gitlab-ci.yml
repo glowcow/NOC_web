@@ -1,14 +1,14 @@
 stages:
-  - build
-  - test
-  - cleanup
-  - push
+  - Build
+  - Test
+  - Cleanup
+  - Push
 
 variables:
   DOCKER_TLS_CERTDIR: ""
 
 build:
-  stage: build
+  stage: Build
   tags:
     - noc_msk
     - docker
@@ -19,7 +19,7 @@ build:
     - docker build -t $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID .
 
 test:
-  stage: test
+  stage: Test
   tags:
     - noc_msk
     - docker
@@ -35,7 +35,7 @@ test:
       --quiet-pull
 
 cleanup:
-  stage: cleanup
+  stage: Cleanup
   tags:
     - noc_msk
     - docker
@@ -47,7 +47,7 @@ cleanup:
   when: always
 
 push:
-  stage: push
+  stage: Push
   tags:
     - noc_msk
     - docker

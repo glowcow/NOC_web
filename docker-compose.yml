@@ -6,7 +6,7 @@ services:
     command: 
       - /bin/sh 
       - -c 
-      - "sleep 2 ; code=`curl -I --silent http://web:80 | awk 'NR==1{print $2}'` ; sleep 1 ; if [ $$code == '200' ]; then exit 0 ; else exit 1 ; fi"
+      - "sleep 2 ; code=`curl -I --silent http://web:80 | awk 'NR==1{print $$2}'` ; sleep 1 ; if [ $$code == '200' ]; then exit 0 ; else exit 1 ; fi"
     depends_on:
       - web
   web:
