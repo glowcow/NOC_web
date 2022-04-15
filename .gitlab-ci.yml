@@ -1,14 +1,15 @@
 stages:
-  - build
-  - test
-  - cleanup
-  - push
+  - Build
+  - Test
+  - Cleanup
+  - Push
+  - Deploy
 
 variables:
   DOCKER_TLS_CERTDIR: ""
 
 Build Image:
-  stage: build
+  stage: Build
   tags:
     - noc_msk
     - docker
@@ -19,7 +20,7 @@ Build Image:
     - docker build -t $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID .
 
 Test with docker-compose:
-  stage: test
+  stage: Test
   tags:
     - noc_msk
     - docker
@@ -34,8 +35,8 @@ Test with docker-compose:
       --exit-code-from test
       --quiet-pull
 
-Cleanup test:
-  stage: cleanup
+Cleanup test stage:
+  stage: Cleanup
   tags:
     - noc_msk
     - docker
@@ -47,7 +48,7 @@ Cleanup test:
   when: always
 
 Push image to registry:
-  stage: push
+  stage: Push
   tags:
     - noc_msk
     - docker
@@ -55,5 +56,17 @@ Push image to registry:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
   script:
     - docker push $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID
+  only:
+    - master
+
+Deploy image:
+  stage: Deploy
+  tags:
+    - noc_msk
+    - docker
+  script:
+    - docker rm -f $CI_PROJECT_NAME
+    - docker create -t -p $CI_DB_HOST:80:80 -e DB_NAME=$CI_DB_NAME -e DB_USER=$CI_DB_USER -e DB_PASSW=$CI_DB_PASSW -e DB_HOST=$CI_DB_HOST --name $CI_PROJECT_NAME --restart unless-stopped $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID
+    - docker start $CI_PROJECT_NAME
   only:
     - master
