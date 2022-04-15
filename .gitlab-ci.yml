@@ -1,5 +1,7 @@
 stages:
   - build
+  - test
+  - cleanup
   - push
 
 variables:
@@ -10,8 +12,39 @@ build:
   tags:
     - noc_msk
     - docker
+  tags:
+    - noc_msk
+    - docker
   script:
     - docker build -t $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID .
+
+test:
+  stage: test
+  tags:
+    - noc_msk
+    - docker
+  image:
+    name: docker/compose:1.29.2
+    entrypoint: [""]
+  script:
+    - docker-compose
+      -p "$CI_PROJECT_NAME"_"$CI_PIPELINE_ID"
+      up
+      --abort-on-container-exit
+      --exit-code-from test
+      --quiet-pull
+
+cleanup:
+  stage: cleanup
+  tags:
+    - noc_msk
+    - docker
+  image:
+    name: docker/compose:1.29.2
+    entrypoint: [""]
+  script:
+    - docker-compose -p "$CI_PROJECT_NAME"_"$CI_PIPELINE_ID" down
+  when: always
 
 push:
   stage: push

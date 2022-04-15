@@ -1,19 +1,24 @@
 version: '3.8'
 
 services:
-  noc_web:
-    image: glowcow/noc_web:latest
+  test:
+    image: curlimages/curl:7.82.0
+    command: /bin/sh -c "sleep 2 ; code=`curl -I --silent http://web:80 | awk 'NR==1{print $2}'` ; sleep 1 ; if [ $code == '200' ]; then exit 0 ; else exit 1 ; fi"
+    depends_on:
+      - web
+  web:
+    image: ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}:${CI_COMMIT_REF_SLUG}.${CI_PIPELINE_ID}
     build: .
-    container_name: noc_web
+    container_name: ${CI_PROJECT_NAME}
     restart: unless-stopped
     ports:
       - "80:80"
     environment:
-      DB_NAME: ""
-      DB_USER: ""
-      DB_PASSW: ""
-      DB_HOST: ""
+      DB_NAME: ${CI_DB_NAME}
+      DB_USER: ${CI_DB_USER}
+      DB_PASSW: ${CI_DB_PASSW}
+      DB_HOST: ${CI_DB_HOST}
 networks:
   default:
-    name: noc_web
+    name: ${CI_PROJECT_NAME}
     driver: bridge
