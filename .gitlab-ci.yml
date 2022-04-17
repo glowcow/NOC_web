@@ -8,7 +8,7 @@ stages:
 variables:
   DOCKER_TLS_CERTDIR: ""
 
-Build Image:
+Build image with Docker:
   stage: Build
   tags:
     - noc_msk
@@ -59,7 +59,7 @@ Push image to registry:
   only:
     - master
 
-Deploy image:
+Deploy image to Docker:
   stage: Deploy
   tags:
     - noc_msk
