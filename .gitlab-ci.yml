@@ -84,6 +84,6 @@ Rollout previous image:
   script:
     - echo $CI_LATEST_TAG
   needs:
-    - job: Deploy
+    - job: Deploy image to Docker
       artifacts: true
   when: manual
