@@ -100,4 +100,6 @@ Rollout to previous image:
   needs:
     - job: Deploy image to Docker
       artifacts: true
+  only:
+    - master
   when: manual
