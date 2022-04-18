@@ -82,7 +82,9 @@ Rollout previous image:
     - noc_msk
     - docker
   script:
-    - echo $CI_LATEST_TAG
+    - docker rm -f $CI_PROJECT_NAME
+    - docker create -t -p $CI_PROD_HOST:80:80 -e DB_NAME=$CI_DB_NAME -e DB_USER=$CI_DB_USER -e DB_PASSW=$CI_DB_PASSW -e DB_HOST=$CI_DB_HOST --name $CI_PROJECT_NAME --restart unless-stopped $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_LATEST_TAG
+    - docker start $CI_PROJECT_NAME
   needs:
     - job: Deploy image to Docker
       artifacts: true
