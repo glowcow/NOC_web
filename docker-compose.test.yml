@@ -11,5 +11,3 @@ services:
       - web
   web:
     container_name: ${CI_PROJECT_NAME}-${CI_PIPELINE_ID}
-    ports:
-      - 8080:80
