@@ -67,12 +67,13 @@ Deploy image to Docker:
   script:
     - echo CI_LATEST_TAG=$(docker inspect --format '{{ index .Config.Image}}' $CI_PROJECT_NAME | cut -d':' -f2) >> deploy.env
     - docker rm -f $CI_PROJECT_NAME
-    - docker create -t -p $CI_PROD_HOST:80:80 
-      -e DB_NAME=$CI_DB_NAME 
-      -e DB_USER=$CI_DB_USER 
-      -e DB_PASSW=$CI_DB_PASSW 
-      -e DB_HOST=$CI_DB_HOST 
-      --name $CI_PROJECT_NAME --restart unless-stopped 
+    - docker create -t -p $CI_PROD_HOST:80:80
+      -e DB_NAME=$CI_DB_NAME
+      -e DB_USER=$CI_DB_USER
+      -e DB_PASSW=$CI_DB_PASSW
+      -e DB_HOST=$CI_DB_HOST
+      --name $CI_PROJECT_NAME --restart unless-stopped
+      -m 512m --memory-reservation=256m --cpus=0.5
       $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID
     - docker start $CI_PROJECT_NAME
   artifacts:
@@ -94,6 +95,7 @@ Rollback to previous image:
       -e DB_PASSW=$CI_DB_PASSW
       -e DB_HOST=$CI_DB_HOST
       --name $CI_PROJECT_NAME --restart unless-stopped
+      -m 512m --memory-reservation=256m --cpus=0.5
       $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_LATEST_TAG
     - docker start $CI_PROJECT_NAME
   needs:
