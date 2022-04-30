@@ -1,6 +1,22 @@
 version: '3.8'
 
 services:
+  db:
+    image: postgres:13.6-alpine
+    container_name: ${CI_PROJECT_NAME}_db
+    restart: unless-stopped
+    volumes:
+      - db_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: ${CI_DB_USER}
+      POSTGRES_PASSWORD: ${CI_DB_PASSW}
+      POSTGRES_DB: ${CI_DB_NAME}
   web:
+    environment:
+      DB_HOST: db
     ports:
       - 80:80
+    depends_on:
+      - db
+volumes:
+  db_data:

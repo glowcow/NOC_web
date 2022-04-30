@@ -1,16 +1,6 @@
 version: '3.8'
 
 services:
-  db:
-    image: postgres:13.6-alpine
-    container_name: ${CI_PROJECT_NAME}_db
-    restart: unless-stopped
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    environment:
-      POSTGRES_USER: ${CI_DB_USER}
-      POSTGRES_PASSWORD: ${CI_DB_PASSW}
-      POSTGRES_DB: ${CI_DB_NAME}
   web:
     image: ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}:${CI_COMMIT_REF_SLUG}.${CI_PIPELINE_ID}
     build: .
@@ -20,11 +10,7 @@ services:
       DB_NAME: ${CI_DB_NAME}
       DB_USER: ${CI_DB_USER}
       DB_PASSW: ${CI_DB_PASSW}
-      DB_HOST: db
-    depends_on:
-      - db
-volumes:
-  postgres_data:
+      DB_HOST: ${CI_DB_HOST}
 networks:
   default:
     name: ${CI_PROJECT_NAME}
