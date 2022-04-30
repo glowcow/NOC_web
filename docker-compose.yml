@@ -6,8 +6,6 @@ services:
     build: .
     container_name: ${CI_PROJECT_NAME}
     restart: unless-stopped
-    ports:
-      - 80:80
     environment:
       DB_NAME: ${CI_DB_NAME}
       DB_USER: ${CI_DB_USER}
