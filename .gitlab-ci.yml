@@ -27,7 +27,7 @@ Test with docker-compose:
     entrypoint: [""]
   script:
     - docker-compose
-      -p "$CI_PROJECT_NAME"_"$CI_PIPELINE_ID"
+      -f docker-compose.yml -f docker-compose.test.yml
       up
       --abort-on-container-exit
       --exit-code-from test
@@ -42,7 +42,9 @@ Cleanup test stage:
     name: docker/compose:1.29.2
     entrypoint: [""]
   script:
-    - docker-compose -p "$CI_PROJECT_NAME"_"$CI_PIPELINE_ID" down
+    - docker-compose 
+      -f docker-compose.yml -f docker-compose.test.yml
+      down
   when: always
 
 Push image to registry:
