@@ -54,8 +54,16 @@ Push image to registry:
     - docker
   before_script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+  rules:
+    - if: '$CUSTOM_TAG != null'
+      variables:
+        IMAGE_TAG: $CUSTOM_TAG
+    - if: '$CUSTOM_TAG == null'
+      variables:
+        IMAGE_TAG: $CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID
   script:
-    - docker push $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID
+    - echo $IMAGE_TAG
+    - docker push $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$IMAGE_TAG
   only:
     - master
 
