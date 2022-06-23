@@ -48,6 +48,8 @@ Cleanup test stage:
   when: always
 
 Push image to registry:
+  variables:
+    IMAGE_TAG: $CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID
   stage: Push
   tags:
     - noc_msk
@@ -58,14 +60,9 @@ Push image to registry:
     - if: '$CUSTOM_TAG != null'
       variables:
         IMAGE_TAG: $CUSTOM_TAG
-    - if: '$CUSTOM_TAG == null'
-      variables:
-        IMAGE_TAG: $CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID
   script:
     - echo $IMAGE_TAG
     - docker push $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$IMAGE_TAG
-  only:
-    - master
 
 Deploy image to Docker:
   stage: Deploy
