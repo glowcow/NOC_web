@@ -10,12 +10,19 @@ variables:
   DOCKER_TLS_CERTDIR: ""
 
 Build image with Docker:
+  variables:
+    IMAGE_TAG: $CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID
   stage: Build
   tags:
     - noc_msk
     - docker
+  rules:
+    - if: '$CUSTOM_TAG != null'
+      variables:
+        IMAGE_TAG: $CUSTOM_TAG
+    - when: always
   script:
-    - docker build -t $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID .
+    - docker build -t $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$IMAGE_TAG .
 
 Test with docker-compose:
   stage: Test
