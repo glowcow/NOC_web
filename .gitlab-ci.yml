@@ -16,14 +16,13 @@ Build image with Docker:
     - noc_msk
     - docker
   rules:
-    - if: '$CUSTOM_TAG != null'
+    - if: $CUSTOM_TAG
       variables:
         IMAGE_TAG: $CUSTOM_TAG
     - when: always
   script:
     - echo $IMAGE_TAG
-    - echo "$IMAGE_TAG" >> build.env
-    - cat build.env
+    - echo IMAGE_TAG=$IMAGE_TAG >> build.env
     - docker build -t $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$IMAGE_TAG .
   artifacts:
     reports:
