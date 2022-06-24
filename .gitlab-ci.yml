@@ -19,7 +19,7 @@ variables:
 test ci 1:
   extends: .test_ci_1
   rules:
-    - if: '$TEST != null'
+    - if: '$TEST != null && !reference [.test_ci_1, rules, if]'
       when: never
 #    - !reference [.test_ci_1, rules]
 
