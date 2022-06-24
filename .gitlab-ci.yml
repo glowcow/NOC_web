@@ -1,4 +1,10 @@
+include:
+  project: glowcow/ci-templates
+  file: devops.yml
+  ref: main
+
 stages:
+  - CI
   - Build
   - Test
   - Cleanup
@@ -9,6 +15,12 @@ stages:
 variables:
   DOCKER_TLS_CERTDIR: ""
   IMAGE_TAG: $CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID
+
+test ci 1:
+  extends: .test_ci_1
+
+test ci 2:
+  extends: .test_ci_2
 
 Build image with Docker:
   stage: Build
