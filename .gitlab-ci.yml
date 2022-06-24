@@ -21,6 +21,11 @@ test ci 1:
 
 test ci 2:
   extends: .test_ci_2
+  rules:
+    - if: '$ARGS != null'
+      when: manual
+    - !reference [.test_ci_2, rules]
+
 
 Build image with Docker:
   stage: Build
