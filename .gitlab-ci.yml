@@ -16,7 +16,7 @@ Build image with Docker:
     - noc_msk
     - docker
   rules:
-    - if: $CUSTOM_TAG
+    - if: '$CUSTOM_TAG != null'
       variables:
         IMAGE_TAG: $CUSTOM_TAG
     - when: always
