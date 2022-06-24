@@ -1,6 +1,6 @@
 include:
   project: glowcow/ci-templates
-  file: devops.yml
+  file: devops.yaml
   ref: main
 
 stages:
