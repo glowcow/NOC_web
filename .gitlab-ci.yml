@@ -8,21 +8,25 @@ stages:
 
 variables:
   DOCKER_TLS_CERTDIR: ""
+  IMAGE_TAG: $CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID
 
 Build image with Docker:
-  variables:
-    IMAGE_TAG: $CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID
   stage: Build
   tags:
     - noc_msk
     - docker
   rules:
-    - if: '$CUSTOM_TAG != null'
+    - if: $CUSTOM_TAG
       variables:
         IMAGE_TAG: $CUSTOM_TAG
     - when: always
   script:
+    - echo $IMAGE_TAG
+    - echo $IMAGE_TAG >> build.env
     - docker build -t $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$IMAGE_TAG .
+  artifacts:
+    reports:
+      dotenv: build.env
 
 Test with docker-compose:
   stage: Test
@@ -33,12 +37,16 @@ Test with docker-compose:
     name: docker/compose:1.29.2
     entrypoint: [""]
   script:
+    - echo $IMAGE_TAG
     - docker-compose
       -f docker-compose.yml -f docker-compose.test.yml
       up
       --abort-on-container-exit
       --exit-code-from test
       --quiet-pull
+  needs:
+    - job: Build image with Docker
+      artifacts: true
 
 Cleanup test stage:
   stage: Cleanup
@@ -55,22 +63,20 @@ Cleanup test stage:
   when: always
 
 Push image to registry:
-  variables:
-    IMAGE_TAG: $CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID
   stage: Push
   tags:
     - noc_msk
     - docker
   before_script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
-  rules:
-    - if: '$CUSTOM_TAG != null'
-      variables:
-        IMAGE_TAG: $CUSTOM_TAG
-    - when: always
   script:
     - echo $IMAGE_TAG
     - docker push $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$IMAGE_TAG
+  needs:
+    - job: Build image with Docker
+      artifacts: true
+  only:
+    - master
 
 Deploy image to Docker:
   stage: Deploy
@@ -78,7 +84,7 @@ Deploy image to Docker:
     - noc_msk
     - docker
   script:
-    - echo CI_LATEST_TAG=$(docker inspect --format '{{ index .Config.Image}}' $CI_PROJECT_NAME | cut -d':' -f2) >> deploy.env
+    - echo CI_LATEST_TAG=$(docker inspect --format '{{index .Config.Image}}' $CI_PROJECT_NAME | cut -d':' -f2) >> deploy.env
     - docker rm -f $CI_PROJECT_NAME
     - docker create -t -p $CI_PROD_HOST:80:80
       -e DB_NAME=$CI_DB_NAME
@@ -87,11 +93,14 @@ Deploy image to Docker:
       -e DB_HOST=$CI_DB_HOST
       --name $CI_PROJECT_NAME --restart unless-stopped
       -m 512m --memory-reservation=256m --cpus=0.5
-      $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID
+      $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$IMAGE_TAG
     - docker start $CI_PROJECT_NAME
   artifacts:
     reports:
       dotenv: deploy.env
+  needs:
+    - job: Build image with Docker
+      artifacts: true
   only:
     - master
 
