@@ -17,11 +17,14 @@ variables:
   IMAGE_TAG: $CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID
 
 test ci 1:
-  extends: .test_ci_1
+  #extends: .test_ci_1
+  stage: !reference [.test_ci_1, stage]
+  image: !reference [.test_ci_1, image]
+  script: !reference [.test_ci_1, script]
   rules:
-    - !reference [.test_ci_1, rules]
     - if: '$TEST != null'
       when: never
+    - !reference [.test_ci_1, rules]
 
 test ci 2:
   extends: .test_ci_2
