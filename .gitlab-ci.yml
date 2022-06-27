@@ -17,21 +17,18 @@ variables:
   IMAGE_TAG: $CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID
 
 test ci 1:
-  #extends: .test_ci_1
-  stage: !reference [.test_ci_1, stage]
-  image: !reference [.test_ci_1, image]
-  script: !reference [.test_ci_1, script]
+  extends: .test_ci_1
   rules:
     - if: '$TEST != null'
       when: never
-    - !reference [.test_ci_1, rules]
+    - !reference [.rules-ci-1, rule1]
+    - !reference [.rules-ci-1, rule2]
 
 test ci 2:
   extends: .test_ci_2
-#  rules:
-#    - if: '$TEST != null'
-#      when: never
-#    - !reference [.test_ci_2, rules]
+  rules:
+    - !reference [.rules-ci-2, rule1]
+    - !reference [.rules-ci-2, rule2]
 
 
 Build image with Docker:
