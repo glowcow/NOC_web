@@ -19,6 +19,8 @@ variables:
 test ci 1:
   extends: .test_ci_1
   rules:
+    - if: '$ARGS == null'
+      when: never
     - !reference [.rules-ci-1, rule1]
     - !reference [.rules-ci-1, rule2]
 
